@@ -2,6 +2,10 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
+html, body {
+    overflow-x: hidden; /* Evita el desplazamiento horizontal */
+    width: 100%;
+}
 
 .menu-superior {
     background-color: rgb(20, 16, 82);
@@ -231,6 +235,55 @@ body {
     text-align: left; 
 }
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 1 0 30%; 
+    box-sizing: border-box;
+    padding: 10px; 
+    text-align: center; 
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+.boton-rating {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.boton-rating .btn {
+    background-color: #ffc107; 
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton-rating .btn:hover {
+    background-color: #e0a800;
+}
 @media (max-width: 800px) {
     .pelicula-container {
         flex-direction: column;

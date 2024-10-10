@@ -15,7 +15,7 @@ a{color:inherit;text-decoration:none}
 	max-width:525px;
 	min-height:670px;
 	position:relative;
-	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+	background:url(https://d4.alternativeto.net/b78f5v11y3zy0M3eqE9___4ua-92It8g3Z3hD25lMmQ/rs:fill:618:394:1/g:no:0:0/YWJzOi8vZGlzdC9zL2xldHRlcmJveGRfOTc2MTIzX2Z1bGwuanBn.jpg) no-repeat center;
 	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
 }
 .login-html{
@@ -148,4 +148,9 @@ a{color:inherit;text-decoration:none}
 }
 .foot-lnk{
 	text-align:center;
+}
+
+.indicaciones p{
+	color: #fff;
+	font-weight: lighter;
 }

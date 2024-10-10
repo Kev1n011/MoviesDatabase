@@ -24,9 +24,9 @@
                 <div class="opciones-dropdown">
                     <h4>Películas</h4>
                     <div class="dropdown">
-                        <li><a href="./movies_popular.html">Populares</a></li>
-                        <li><a href="./movies_cartelera.html">En cartelera</a></li>
-                        <li><a href="./movies_rating.html">Mejor calificados</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
                     </div>
                 </div>
                 <div class="opciones-dropdown">
@@ -42,7 +42,7 @@
                 <div class="opciones-dropdown perfil-dropdown">
                     <div class="button-perfil"></div>
                     <div class="dropdown-perfil">
-                        <li><a href="./movies_rated.html">Películas favoritas</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Películas favoritas</a></li>
                         <li><a href="/Listas/Lista_series/series_rated.html">Series favoritas</a></li>
 
                     </div>
@@ -51,10 +51,9 @@
         </div>
     </div>
 
-    <div id="main-popular">
+    <div id="main-rating">
 
-
-        <h2 class="font-weight-light">Populares</h2>
+        <h2 class="font-weight-light">Mejor calificados</h2>
         <div class="row">
             <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-6 col-md-4 col-lg-2">
                 <div class="card">
@@ -62,7 +61,7 @@
                         :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
                         alt="Poster">
                     <div class="card-body">
-                        <h6 class="card-title">{{pelicula.title}}</h6>
+                        <h6 class="card-title">{{pelicula.original_name}}</h6>
                     </div>
                 </div>
             </div>
@@ -78,7 +77,7 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="/script/Peliculas/popular.js"></script>
+    <script src="/script/Series/rating.js"></script>
 
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

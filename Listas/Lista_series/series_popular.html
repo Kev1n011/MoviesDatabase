@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/Style/cartas_lista.css">
+</head>
+
+<body>
+    <div class="menu-superior">
+
+        <div class="d-flex justify-content-between align-items-center" style="height: 100%;">
+            <div class="opciones">
+                <a href="/movies.html">
+                    <img src="/img/Logo/Logo.png" class="logo">
+                </a>
+                <div class="opciones-dropdown">
+                    <h4>Películas</h4>
+                    <div class="dropdown">
+                        <li><a href="/Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
+                        <li><a href="/Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
+                    </div>
+                </div>
+                <div class="opciones-dropdown">
+                    <h4>Series de TV</h4>
+                    <div class="dropdown">
+                        <li><a href="/Listas/Lista_series/series_popular.html">Populares</a></li>
+                        <li><a href="/Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opciones-perfil">
+                <div class="opciones-dropdown perfil-dropdown">
+                    <div class="button-perfil"></div>
+                    <div class="dropdown-perfil">
+                        <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Películas favoritas</a></li>
+                        <li><a href="/Listas/Lista_series/series_rated.html">Series favoritas</a></li>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-popular">
+
+
+        <h2 class="font-weight-light">Populares</h2>
+        <div class="row">
+            <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-6 col-md-4 col-lg-2">
+                <div class="card">
+                    <img @click="guardarDatos(pelicula)"
+                        :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
+                        alt="Poster">
+                    <div class="card-body">
+                        <h6 class="card-title">{{pelicula.original_name}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="button-69" @click="mostrar_mas()"> Mostrar más</button>
+
+
+
+
+
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/script/Series/popular.js"></script>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script>
+        //Comprobar si el token existe en el localStorage
+        document.addEventListener('DOMContentLoaded', function () {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert("No tienes acceso a esta página. Por favor, inicia sesión.");
+                window.location.href = '/login.html';
+            } else {
+                console.log("Token encontrado, puedes acceder.");
+            }
+        });
+    </script>
+    <script src="/script/Diseño/dropdown.js"></script>
+
+
+</body>
+
+</html>

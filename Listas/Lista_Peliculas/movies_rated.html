@@ -32,14 +32,8 @@
                 <div class="opciones-dropdown">
                     <h4>Series de TV</h4>
                     <div class="dropdown">
-                        <li><a href="/series_popular.html">Populares</a></li>
-                        <li><a href="#mejor-series">Mejor calificados</a></li>
-                    </div>
-                </div>
-                <div class="opciones-dropdown">
-                    <h4>Personas</h4>
-                    <div class="dropdown">
-                        <li><a href="/series_popular.html">Populares</a></li>
+                        <li><a href="/Listas/Lista_series/series_popular.html">Populares</a></li>
+                        <li><a href="/Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
                     </div>
                 </div>
             </div>
@@ -49,6 +43,7 @@
                     <div class="button-perfil"></div>
                     <div class="dropdown-perfil">
                         <li><a href="./movies_rated.html">Películas favoritas</a></li>
+                        <li><a href="/Listas/Lista_series/series_rated.html">Series favoritas</a></li>
 
                     </div>
                 </div>
@@ -58,7 +53,7 @@
 
     <div id="main-rated">
 
-        <h2 class="font-weight-light">En cartelera</h2>
+        <h2 class="font-weight-light">Peliculas favoritas</h2>
         <div class="row">
             <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-6 col-md-4 col-lg-2">
                 <div class="card">
@@ -71,7 +66,6 @@
             </div>
         </div>
 
-        <button class="button-69" @click="mostrar_mas()"> Mostrar más</button>
 
 
 
