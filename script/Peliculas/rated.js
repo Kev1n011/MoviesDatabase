@@ -1,10 +1,9 @@
-const { createApp, ref } = Vue
+const { createApp: app_pelicula_rating, ref: ref_rating } = Vue;
 
-createApp({
-
+app_pelicula_rating({
     setup() {
-        const peliculas = ref([]);
-        let paginas = ref(1);
+        const peliculas = ref_rating([]);
+        let paginas = ref_rating(1);
 
         return {
             peliculas,
@@ -14,7 +13,8 @@ createApp({
 
     methods: {
         async obtener_peliculas() {
-            const url = "https://api.themoviedb.org/3/movie/now_playing?api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
+            let guest_session = localStorage.getItem('guest_session_id')
+            const url = "https://api.themoviedb.org/3/guest_session/" + guest_session +"/rated/movies?&api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -33,7 +33,8 @@ createApp({
         },
 
         async obtener_lista() {
-            const url = "https://api.themoviedb.org/3/movie/now_playing?api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
+            let guest_session = localStorage.getItem('guest_session_id')
+            const url = "https://api.themoviedb.org/3/guest_session/" + guest_session +"/rated/movies?&api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -50,7 +51,6 @@ createApp({
             }
         },
 
-
         siguiente_pagina() {
             this.paginas++;
             this.obtener_peliculas();
@@ -63,7 +63,7 @@ createApp({
 
         guardarDatos(pelicula) {
             localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
-            window.location.href = '/movie.html';
+            window.location.href = 'movie.html';
         }
     },
 
@@ -71,4 +71,4 @@ createApp({
         this.obtener_peliculas();
     }
 
-}).mount('#main-cartelera');
+}).mount('#main-rated');

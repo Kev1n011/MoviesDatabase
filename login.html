@@ -104,15 +104,27 @@
                             redirect: 'follow'
                         };
 
-                        const response = await fetch("https://api.themoviedb.org/3/authentication/token/new", requestOptions);
-                        const result = await response.json();
+                        // Solicitar el token
+                        const tokenResponse = await fetch("https://api.themoviedb.org/3/authentication/token/new", requestOptions);
+                        const tokenResult = await tokenResponse.json();
                         
-                        if (result.success) {
-                            //Guardar token en el localStorage
-                            localStorage.setItem('token', result.request_token);
-                            console.log("Token guardado en localStorage:", result.request_token);
+                        if (tokenResult.success) {
+                            const token = tokenResult.request_token;
+                            localStorage.setItem('token', token);
+                            console.log("Token guardado en localStorage:", token);
+
+                            // Ahora solicita el guest session ID usando el token
+                            const guestSessionResponse = await fetch("https://api.themoviedb.org/3/authentication/guest_session/new", requestOptions);
+                            const guestSessionResult = await guestSessionResponse.json();
+                            
+                            if (guestSessionResult.success) {
+                                console.log("Guest Session ID:", guestSessionResult.guest_session_id);
+                                localStorage.setItem('guest_session_id', guestSessionResult.guest_session_id);
+                            } else {
+                                console.error("Error al obtener el guest session ID:", guestSessionResult);
+                            }
                         } else {
-                            console.error("Error al obtener el token:", result);
+                            console.error("Error al obtener el token:", tokenResult);
                         }
                     } catch (error) {
                         console.error('Error:', error);
@@ -137,3 +149,5 @@
 </body>
 
 </html>
+
+

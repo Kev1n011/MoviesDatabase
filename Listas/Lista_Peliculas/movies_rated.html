@@ -56,14 +56,13 @@
         </div>
     </div>
 
-    <div id="main-rating">
+    <div id="main-rated">
 
-        <h2 class="font-weight-light">Mejor calificados</h2>
+        <h2 class="font-weight-light">En cartelera</h2>
         <div class="row">
             <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-6 col-md-4 col-lg-2">
                 <div class="card">
-                    <img @click="guardarDatos(pelicula)"
-                        :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
+                    <img :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
                         alt="Poster">
                     <div class="card-body">
                         <h6 class="card-title">{{pelicula.title}}</h6>
@@ -82,7 +81,7 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="/script/Peliculas/rating.js"></script>
+    <script src="/script/Peliculas/rated.js"></script>
 
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

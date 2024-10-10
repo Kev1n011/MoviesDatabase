@@ -1,6 +1,6 @@
-const { createApp: iniciarApp, ref: ref_rating } = Vue;
+const { createApp: app_pelicula_rating, ref: ref_rating } = Vue;
 
-iniciarApp({
+app_pelicula_rating({
     setup() {
         const peliculas = ref_rating([]);
         let paginas = ref_rating(1);
@@ -61,7 +61,7 @@ iniciarApp({
 
         guardarDatos(pelicula) {
             localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
-            window.location.href = 'movie.html';
+            window.location.href = '/movie.html';
         }
     },
 
