@@ -57,7 +57,7 @@
         <div class="row">
             <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-6 col-md-4 col-lg-2">
                 <div class="card">
-                    <img :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
+                    <img @click="guardarDatos(pelicula)" :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" class="card-img-top"
                         alt="Poster">
                     <div class="card-body">
                         <h6 class="card-title">{{pelicula.original_name}}</h6>

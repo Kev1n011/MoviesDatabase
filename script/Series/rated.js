@@ -63,7 +63,7 @@ app_pelicula_rating({
 
         guardarDatos(pelicula) {
             localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
-            window.location.href = 'serie.html';
+            window.location.href = '/serie.html';
         }
     },
 
