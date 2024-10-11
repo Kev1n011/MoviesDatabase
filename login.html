@@ -29,7 +29,7 @@
                         
                         <div class="group">
                             <label for="username" class="label">Usuario</label>
-                            <input v-model="usuario.username" id="username" type="username" class="input">
+                            <input v-model="usuario.username" id="username" type="text" class="input">
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Contraseña</label>
@@ -53,7 +53,7 @@
         createApp({
             setup() {
                 const usuario = ref({
-                    email: '',
+                    username: '',
                     contrasena: ''
                 });
 
@@ -62,11 +62,16 @@
                 };
             },
             methods: {
-                 //Obtener token para iniciar sesión
-                 async obtenerToken() {
+                //Obtener token para iniciar sesión
+                async obtenerToken() {
+                    if (!this.usuario.username || !this.usuario.contrasena) {
+                        alert("Por favor, ingresa el usuario y la contraseña.");
+                        return;
+                    }
+
                     try {
                         const myHeaders = new Headers();
-                        myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODM3NTU2MS4zODQ1NDYsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.X2oJcLY9SmvukVT9Ppz_REHsLhlXWPFYGhl8qvX1iIs");
+                        myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODU2NTQzMC42NjU0NjEsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-7B-PHciEuOMKZXeB8SwBdjvE4o3chMrKTqFWlu0i1c");
 
                         const requestOptions = {
                             method: 'GET',
@@ -80,87 +85,86 @@
                         if (result.success) {
                             const token = result.request_token;
                             localStorage.setItem('token', token);
-                            return token;
+
+                            // Validar las credenciales del usuario
+                            this.validarCredenciales(token);
                         } else {
                             console.error("Error al obtener el token:", result);
-                            return null;
                         }
                     } catch (error) {
                         console.error('Error:', error);
-                        return null;
                     }
                 },
 
-                //Validar credenciales de usuario
-                async validarFormulario() {
-                    if (this.usuario.username && this.usuario.contrasena) {
-                        const token = await this.obtenerToken(); // Obtener el token primero
-                        if (token) {
-                            try {
-                                const myHeaders = new Headers();
-                                myHeaders.append("Content-Type", "application/json");
-                                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODU2NTQzMC42NjU0NjEsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-7B-PHciEuOMKZXeB8SwBdjvE4o3chMrKTqFWlu0i1c");
-
-                                const raw = JSON.stringify({
-                                    "username": this.usuario.username,
-                                    "password": this.usuario.contrasena,
-                                    "request_token": token
-                                });
-
-                                const requestOptions = {
-                                    method: 'POST',
-                                    headers: myHeaders,
-                                    body: raw,
-                                    redirect: 'follow'
-                                };
-
-                                const response = await fetch("https://api.themoviedb.org/3/authentication/token/validate_with_login", requestOptions);
-                                const result = await response.json();
-
-                                if (result.success) {
-                                    alert("Login exitoso");
-
-                                    await this.obtenerGuestSessionID();
-
-                                    window.location.href = './movies.html'; 
-                                } else {
-                                    alert("Usuario o contraseña incorrectos.");
-                                }
-                            } catch (error) {
-                                console.error('Error:', error);
-                                alert("Ocurrió un error durante el login.");
-                            }
-                        } else {
-                            alert("Error al obtener el token.");
-                        }
-                    } else {
-                        alert("Por favor, ingresa el usuario y la contraseña.");
-                    }
-                },
-
-                async obtenerGuestSessionID() {
+                // Validar credenciales con el token
+                async validarCredenciales(token) {
                     try {
                         const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/json");
                         myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODU2NTQzMC42NjU0NjEsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-7B-PHciEuOMKZXeB8SwBdjvE4o3chMrKTqFWlu0i1c");
 
+                        const raw = JSON.stringify({
+                            "username": this.usuario.username,
+                            "password": this.usuario.contrasena,
+                            "request_token": token
+                        });
+
                         const requestOptions = {
-                            method: 'GET',
+                            method: 'POST',
                             headers: myHeaders,
+                            body: raw,
                             redirect: 'follow'
                         };
 
-                        const response = await fetch("https://api.themoviedb.org/3/authentication/guest_session/new", requestOptions);
+                        const response = await fetch("https://api.themoviedb.org/3/authentication/token/validate_with_login", requestOptions);
                         const result = await response.json();
 
                         if (result.success) {
-                            console.log("Guest Session ID:", result.guest_session_id);
-                            localStorage.setItem('guest_session_id', result.guest_session_id);
+                            // Si es válido, crear la sesión
+                            this.generarSessionID(token);
                         } else {
-                            console.error("Error al obtener el guest session ID:", result);
+                            alert("Usuario o contraseña incorrectos.");
                         }
                     } catch (error) {
-                        console.error('Error:', error);
+                        console.error('Error al validar las credenciales:', error);
                     }
+                },
+
+                // Crear la session ID después de la validación del token
+                async generarSessionID(token) {
+                    try {
+                        const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/json");
+                        myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODU2NTQzMC42NjU0NjEsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-7B-PHciEuOMKZXeB8SwBdjvE4o3chMrKTqFWlu0i1c");
+
+                        const raw = JSON.stringify({
+                            "request_token": token
+                        });
+
+                        const requestOptions = {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: 'follow'
+                        };
+
+                        const response = await fetch("https://api.themoviedb.org/3/authentication/session/new?api_key=81897c6294319bfc06c39ba740a6bfab", requestOptions);
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert("Sesión creada exitosamente");
+                            localStorage.setItem('session_id', result.session_id);
+                            window.location.href = './movies.html';
+                        } else {
+                            alert("Error al crear la sesión.");
+                        }
+                    } catch (error) {
+                        console.error('Error al crear la sesión:', error);
+                    }
+                },
+
+                validarFormulario() {
+                    this.obtenerToken();
                 }
             },
         }).mount('#main');

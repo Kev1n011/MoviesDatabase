@@ -87,7 +87,9 @@ fetch("https://api.themoviedb.org/3/movie/115/rating?session_id=2675693207a25ee2
     },
 
     async mounted() {
+        
         this.obtener_peliculas();
+        console.log(localStorage.getItem('session_id'))
     }
 
 }).mount('#main-popular');

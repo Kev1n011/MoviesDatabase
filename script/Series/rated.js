@@ -13,8 +13,8 @@ app_pelicula_rating({
 
     methods: {
         async obtener_peliculas() {
-            let guest_session = localStorage.getItem('guest_session_id')
-            const url = "https://api.themoviedb.org/3/guest_session/" + guest_session +"/rated/tv?&api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
+            let guest_session = localStorage.getItem('session_id')
+            const url = "https://api.themoviedb.org/3/account/:account_id/rated/tv?session_id="+ guest_session +"&api_key=81897c6294319bfc06c39ba740a6bfab";
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -34,7 +34,7 @@ app_pelicula_rating({
 
         async obtener_lista() {
             let guest_session = localStorage.getItem('guest_session_id')
-            const url = "https://api.themoviedb.org/3/guest_session/" + guest_session +"/rated/tv?&api_key=81897c6294319bfc06c39ba740a6bfab&page=" + this.paginas;
+            const url = "https://api.themoviedb.org/3/account/:account_id/rated/tv?session_id="+ guest_session +"&api_key=81897c6294319bfc06c39ba740a6bfab";
             try {
                 const response = await fetch(url);
                 if (!response.ok) {

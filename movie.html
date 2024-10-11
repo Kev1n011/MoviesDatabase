@@ -34,7 +34,7 @@
                         <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
                     </div>
                 </div>
-               
+                
             </div>
 
             <div class="opciones-perfil">
@@ -57,14 +57,13 @@
             <div class="portada">
                 <img :src="'http://image.tmdb.org/t/p/w500' + pelicula.poster_path" alt="Poster de la Película">
             </div>
-            
+    
             <div class="resumen">
-                <h1>{{pelicula_detalles.title}}</h1>
-                <p>{{generos}}</p>
+                <h1>{{ pelicula_detalles.original_name }}</h1>
+                <p>{{ generos }}</p>
                 <h3>Resumen</h3>
                 <div class="resumen-texto">
-                    <p>{{pelicula_detalles.overview}}</p>
-
+                    <p>{{ pelicula_detalles.overview }}</p>
                 </div>
                 <div>
                     <h3>Elenco:</h3>
@@ -75,17 +74,15 @@
                         </div>
                     </div>
                 </div>
-
+    
                 <div class="boton-rating">
                     <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
+                    <!-- Mostrar rating solo si ya existe -->
+                    <span v-if="pelicula.rating !== undefined" class="ml-3">Rating dado: {{ pelicula.rating }}</span>
                 </div>
-                
-                
-
             </div>
         </div>
-       
-
+    
         <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -118,7 +115,6 @@
 
 
 </body>
-
 <script>
     //Comprobar si el token existe en el localStorage
     document.addEventListener('DOMContentLoaded', function () {
@@ -137,41 +133,36 @@
 <script>
     const { createApp } = Vue;
 
-    createApp({
-        data() {
-            return {
-                pelicula: JSON.parse(localStorage.getItem('peliculaSeleccionada')) || {},
-                rating: 0,
-                pelicula_detalles: [],
-                generos: "",
-                casting: [],
-
-            };
+createApp({
+    data() {
+        return {
+            pelicula: JSON.parse(localStorage.getItem('peliculaSeleccionada')) || {},
+            rating: 0,
+            pelicula_detalles: [],
+            generos: "",
+            casting: [],
+        };
+    },
+    methods: {
+        mostrarModal() {
+            this.rating = 0;
+            $('#ratingModal').modal('show');
         },
-        methods: {
-            mostrarModal() {
-                this.rating = 0;
-                $('#ratingModal').modal('show');
-            },
-            cerrarModal() {
-                $('#ratingModal').modal('hide');
-            },
-            async anadirRating() {
-                const sessionId = localStorage.getItem('guest_session_id');
-                const peliculaId = this.pelicula.id;
-                const rating = this.rating;
+        cerrarModal() {
+            $('#ratingModal').modal('hide');
+        },
+        async anadirRating() {
+            const sessionId = localStorage.getItem('session_id');
+            const peliculaId = this.pelicula.id;
+            const rating = this.rating;
 
-                console.log(sessionId);
-                console.log(peliculaId);
-                console.log(rating);
+            if (!sessionId || !peliculaId || !rating) {
+                console.error('Faltan datos necesarios para añadir el rating.');
+                return;
+            }
 
-                if (!sessionId || !peliculaId || !rating) {
-                    console.error('Faltan datos necesarios para añadir el rating.');
-                    return;
-                }
-
-                try {
-                    const myHeaders = new Headers();
+            try {
+              const myHeaders = new Headers();
                     myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTg5N2M2Mjk0MzE5YmZjMDZjMzliYTc0MGE2YmZhYiIsIm5iZiI6MTcyODQ1ODU4OS41MzMyMzIsInN1YiI6IjY2ZjNmOTk3M2E5NWE1YmNkYTIyZmExNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.U8aPg3YgoPNGzJpYxgpJXqRzyRtGFDsLoB29tByC_mU");
                     myHeaders.append("Content-Type", "application/json;charset=utf-8");
 
@@ -186,11 +177,12 @@
                         redirect: 'follow'
                     };
 
-                    const response = await fetch(`https://api.themoviedb.org/3/movie/${peliculaId}/rating?guest_session_id=${sessionId}`, requestOptions);
+                    const response = await fetch(`https://api.themoviedb.org/3/movie/${peliculaId}/rating?session_id=${sessionId}`, requestOptions);
                     const result = await response.json();
 
                     if (result.success) {
                         console.log("Rating añadido con éxito:", result);
+                        this.pelicula.rating = rating
                         this.cerrarModal();
                     } else {
                         console.error("Error al añadir el rating:", result);
@@ -198,56 +190,63 @@
                 } catch (error) {
                     console.error('Error:', error);
                 }
-            },
-
-            async obtener_pelicula() {
-                const url = "https://api.themoviedb.org/3/movie/" + this.pelicula.id + "?&api_key=81897c6294319bfc06c39ba740a6bfab"
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`Response status: ${response.status}`);
-                    }
-                    const json = await response.json();
-
-                    //Se almacena el objeto JSON en pelicula_detalles
-                    this.pelicula_detalles = json;
-
-                    this.generos = this.pelicula_detalles.genres.map(genero => genero.name).join(', ');
-
-                    console.log("Película completa: ", this.pelicula_detalles);
-                } catch (error) {
-                    console.error(error);
-                }
-            },
-            async obtener_casting() {
-                const url = "https://api.themoviedb.org/3/movie/" + this.pelicula.id + "/credits?&api_key=81897c6294319bfc06c39ba740a6bfab"
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`Response status: ${response.status}`);
-                    }
-                    const json = await response.json();
-
-                    //Se almacena el objeto JSON en pelicula_detalles
-
-                    this.casting = json.cast.slice(0, 9).map(actor => ({
-                        name: actor.name,
-                        character: actor.character,
-                        known_for_department: actor.known_for_department
-                    }));
-
-                    console.log("Casting:", this.casting);
-                } catch (error) {
-                    console.error(error);
-                }
-            },
-
         },
-        async mounted() {
-            this.obtener_pelicula();
-            this.obtener_casting();
-        }
-    }).mount('#app');
+        async obtener_peliculas() {
+            let guest_session = localStorage.getItem('session_id');
+            const url = `https://api.themoviedb.org/3/account/:account_id/rated/movies?session_id=${guest_session}&api_key=81897c6294319bfc06c39ba740a6bfab`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+                const peliculaRating = json.results.find(p => p.id === this.pelicula.id);
+
+                if (peliculaRating) {
+                    this.pelicula.rating = peliculaRating.rating;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async obtener_pelicula() {
+            const url = `https://api.themoviedb.org/3/movie/${this.pelicula.id}?&api_key=81897c6294319bfc06c39ba740a6bfab`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+
+                this.pelicula_detalles = json;
+                this.generos = this.pelicula_detalles.genres.map(genero => genero.name).join(', ');
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async obtener_casting() {
+            const url = `https://api.themoviedb.org/3/movie/${this.pelicula.id}/credits?&api_key=81897c6294319bfc06c39ba740a6bfab`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+                this.casting = json.cast.slice(0, 9).map(actor => ({
+                    name: actor.name,
+                    character: actor.character,
+                }));
+            } catch (error) {
+                console.error(error);
+            }
+        },
+    },
+    async mounted() {
+        this.obtener_pelicula();
+        this.obtener_casting();
+        this.obtener_peliculas(); // Obtener si ya hay un rating
+    }
+}).mount('#app');
 </script>
 <script src="/script/Diseño/dropdown.js"></script>
 
