@@ -284,6 +284,12 @@ html, body {
 .boton-rating .btn:hover {
     background-color: #e0a800;
 }
+
+.icono-perfil img {
+    border-radius: 50%; 
+    width: 100%; 
+    height: 100%;
+}
 @media (max-width: 800px) {
     .pelicula-container {
         flex-direction: column;
