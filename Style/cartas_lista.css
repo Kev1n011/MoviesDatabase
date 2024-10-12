@@ -1,3 +1,4 @@
+/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -24,21 +25,6 @@ body {
     content: "";
     display: table;
     clear: both;
-}
-
-@media screen and (max-width: 600px) {
-    .column {
-        width: 100%;
-        display: block;
-        margin-bottom: 20px;
-    }
-
-    .button-69 {
-        font-size: 3.5vw;
-        height: 55px;
-        line-height: 55px;
-        width: 150px;
-    }
 }
 
 .card {
@@ -81,6 +67,79 @@ body {
     font-weight: bold;
     margin-top: 30%;
     margin-left: 25%;
+}
+
+
+@media screen and (min-width: 1900px) {
+    .card {
+        flex: 1 1 calc(16.66% - 10px); 
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .row {
+        margin: 0 10vh;
+        margin-top: 5vh;
+    }
+  
+    
+
+    .card {
+        flex: 1 1 calc(20% - 10px); 
+    }
+
+    .card-title {
+        font-size: 1vw;
+    }
+
+    .button-69 {
+        width: 12%;
+        font-size: 1.2vw;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .row {
+        margin: 0 5vh;
+        margin-top: 5vh;
+    }
+
+    
+
+    .card {
+        flex: 1 1 calc(25% - 10px);
+    }
+
+    .card-title {
+        font-size: 1.4vw;
+    }
+
+    .button-69 {
+        width: 14%;
+        font-size: 1.4vw;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .row {
+        margin: 0 2vh;
+        margin-top: 5vh;
+    }
+
+    .card {
+        flex: 1 1 100%; 
+        aspect-ratio: 2 / 3;
+    }
+
+    .card-title {
+        font-size: 3vw;
+    }
+
+    .button-69 {
+        width: 100%;
+        font-size: 3.5vw;
+    }
+    
 }
 
 /*MENÚ SUPERIOR*/
@@ -207,9 +266,15 @@ body {
 
 .opciones-perfil {
     color: #ffffff;
-    margin-right: 10vw;
+    width: 40vw;
+    margin-left: 400px;
+    text-align: center;
     display: flex;
+    list-style: none;
+    justify-content: center;
     align-items: center;
+    height: 100%;
+    justify-content: space-around;
 }
 
 .perfil-dropdown {
@@ -281,8 +346,8 @@ body {
 }
 
 .font-weight-light {
-    margin-top: 8vh;
-    margin-left: 10.2vw;
+    margin-left: 0;
+    font-size: 34px;
 }
 
 .icono-perfil img {
